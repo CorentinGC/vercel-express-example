@@ -4,11 +4,11 @@ const port = 4000
 
 
 app.get('/', (req, res) => {
-    res.status(200).send('hello world')
+    res.status(200).json({code: 'HEllo World'})
 })
 
 app.get('/auth/:route', (req, res) => {
-    res.status(200).send('Auth path')
+    res.status(401).json({code: "unauthorized"})
 })
 
 app.listen(port, () => {
