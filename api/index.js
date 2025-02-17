@@ -4,13 +4,22 @@ const port = 4000
 
 const { 
     isAuth, 
-    isUser
+    isUser,
+    isAdmin
 } = require('./middleware')
 
 
-app.get('/', [isAuth, isUser], (req, res) => {
-    res.status(200).json({code: 'HEllo World'})
+app.get('/', [isAuth], (req, res) => {
+    res.status(200).json({code: 'You are auth and allowed!'})
 })
+
+app.get('/user', [isUser], (req, res) => {
+    res.status(200).json({code: 'You are user and allowed'})
+})
+app.get('/admin', [isAdmin], (req, res) => {
+    res.status(200).json({code: 'You are admin and allowed'})
+})
+
 
 
 app.listen(port, () => {

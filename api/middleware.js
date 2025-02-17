@@ -1,17 +1,37 @@
-exports.isAuth = (req, res, next) => {
-    if(!req.headers?.authorization) res.status(401).json({code: "unauthorized"})
-    else {
+const verifToken = (req) => {
+    // check token presence
+    if(!req.headers?.authorization) return false
 
-        // Continue to route
-        next()
+    //check token validity
+    return {
+        email: "john@doe.com",
+        level: "user"
     }
+}
+exports.isAuth = (req, res, next) => {
+    const token = verifToken(req)
+    if(!token) return res.status(401).json({code: "unauthorized"})
+
+    // Continue to route
+    next()
 }
 
 exports.isUser = (req, res, next) => {
-    if(!req.headers?.authorization) return res.status(401).json({code: "unauthorized"})
-    const token = req.headers?.authorization
-        console.log('Token is: ', token)
-    if(token !== 'Bearer user') return res.status(401).json({code: "unauthorized"})
+    const token = verifToken(req)
+    if(!token) return res.status(401).json({code: "unauthorized"})
+
+    if(token.level !== 'user') return res.status(401).json({code: "unauthorized"})
+
+    // Continue to route
+    next()
+}
+
+exports.isAdmin = (req, res, next) => {
+    const token = verifToken(req)
+    if(!token) return res.status(401).json({code: "unauthorized"})
+
+    if(token.level !== 'admin') return res.status(401).json({code: "unauthorized"})
+
     // Continue to route
     next()
 }
