@@ -20,7 +20,10 @@ app.get('/admin', [isAdmin], (req, res) => {
     res.status(200).json({code: 'You are admin and allowed'})
 })
 
-
+// Default / 404
+app.get('*', (req, res) => {
+    res.status(404).json({code: 'route not found'})
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
